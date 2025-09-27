@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&D Character Creator</title>
+    <style>
+        :root {
+            --primary: #8B4513;
+            --secondary: #D2B48C;
+            --accent: #CD853F;
+            --light: #F5F5DC;
+            --dark: #3E2723;
+            --text: #2C1810;
+            --success: #4CAF50;
+            --danger: #f44336;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        .creator-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .creator-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .form-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .preview-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1, h2, h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+        }
+        
+        h2 {
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 0.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .custom-input-container {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .custom-input-container input {
+            flex: 1;
+        }
+        
+        .custom-input-container button {
+            white-space: nowrap;
+        }
+        
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: var(--accent);
+        }
+        
+        button.success {
+            background-color: var(--success);
+        }
+        
+        button.danger {
+            background-color: var(--danger);
+        }
+        
+        button.small {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .character-sheet {
+            border: 2px solid var(--secondary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            background-color: #f9f5f0;
+        }
+        
+        .character-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 1rem;
+        }
+        
+        .character-name {
+            font-size: 2rem;
+            color: var(--dark);
+        }
+        
+        .character-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .ability-scores {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .ability-score {
+            text-align: center;
+            padding: 1rem;
+            background-color: var(--secondary);
+            border-radius: 4px;
+        }
+        
+        .ability-name {
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .ability-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+        
+        .character-traits {
+            margin-bottom: 1.5rem;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 1rem;
+        }
+        
+        .tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-bottom: none;
+            border-radius: 4px 4px 0 0;
+        }
+        
+        .tab.active {
+            background-color: white;
+            border-color: #ddd;
+            border-bottom-color: white;
+            margin-bottom: -1px;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .custom-options {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .custom-options h4 {
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        .custom-list {
+            list-style-type: none;
+            margin-top: 0.5rem;
+        }
+        
+        .custom-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .custom-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .custom-list button {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1rem;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .modal h3 {
+            margin-bottom: 1rem;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>D&D Character Creator</h1>
+        <p>Build your perfect Dungeons & Dragons character</p>
+    </header>
+    
+    <div class="container">
+        <div class="creator-container">
+            <div class="form-section">
+                <h2>Character Creation</h2>
+                
+                <div class="form-group">
+                    <label for="characterName">Character Name</label>
+                    <input type="text" id="characterName" placeholder="Enter character name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="race">Race</label>
+                    <select id="race">
+                        <option value="">Select a race</option>
+                        <option value="human">Human</option>
+                        <option value="elf">Elf</option>
+                        <option value="dwarf">Dwarf</option>
+                        <option value="halfling">Halfling</option>
+                        <option value="gnome">Gnome</option>
+                        <option value="half-elf">Half-Elf</option>
+                        <option value="half-orc">Half-Orc</option>
+                        <option value="tiefling">Tiefling</option>
+                    </select>
+                    <div class="custom-input-container">
+                        <input type="text" id="customRaceInput" placeholder="Add custom race">
+                        <button id="addCustomRace" class="small">Add</button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="class">Class</label>
+                    <select id="class">
+                        <option value="">Select a class</option>
+                        <option value="barbarian">Barbarian</option>
+                        <option value="bard">Bard</option>
+                        <option value="cleric">Cleric</option>
+                        <option value="druid">Druid</option>
+                        <option value="fighter">Fighter</option>
+                        <option value="monk">Monk</option>
+                        <option value="paladin">Paladin</option>
+                        <option value="ranger">Ranger</option>
+                        <option value="rogue">Rogue</option>
+                        <option value="sorcerer">Sorcerer</option>
+                        <option value="warlock">Warlock</option>
+                        <option value="wizard">Wizard</option>
+                    </select>
+                    <div class="custom-input-container">
+                        <input type="text" id="customClassInput" placeholder="Add custom class">
+                        <button id="addCustomClass" class="small">Add</button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="background">Background</label>
+                    <select id="background">
+                        <option value="">Select a background</option>
+                        <option value="acolyte">Acolyte</option>
+                        <option value="criminal">Criminal</option>
+                        <option value="folk-hero">Folk Hero</option>
+                        <option value="noble">Noble</option>
+                        <option value="sage">Sage</option>
+                        <option value="soldier">Soldier</option>
+                    </select>
+                    <div class="custom-input-container">
+                        <input type="text" id="customBackgroundInput" placeholder="Add custom background">
+                        <button id="addCustomBackground" class="small">Add</button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="alignment">Alignment</label>
+                    <select id="alignment">
+                        <option value="">Select alignment</option>
+                        <option value="lawful-good">Lawful Good</option>
+                        <option value="neutral-good">Neutral Good</option>
+                        <option value="chaotic-good">Chaotic Good</option>
+                        <option value="lawful-neutral">Lawful Neutral</option>
+                        <option value="true-neutral">True Neutral</option>
+                        <option value="chaotic-neutral">Chaotic Neutral</option>
+                        <option value="lawful-evil">Lawful Evil</option>
+                        <option value="neutral-evil">Neutral Evil</option>
+                        <option value="chaotic-evil">Chaotic Evil</option>
+                    </select>
+                    <div class="custom-input-container">
+                        <input type="text" id="customAlignmentInput" placeholder="Add custom alignment">
+                        <button id="addCustomAlignment" class="small">Add</button>
+                    </div>
+                </div>
+                
+                <h3>Ability Scores</h3>
+                <div class="ability-scores-form">
+                    <div class="form-group">
+                        <label for="strength">Strength</label>
+                        <input type="number" id="strength" min="1" max="20" value="10">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dexterity">Dexterity</label>
+                        <input type="number" id="dexterity" min="1" max="20" value="10">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="constitution">Constitution</label>
+                        <input type="number" id="constitution" min="1" max="20" value="10">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="intelligence">Intelligence</label>
+                        <input type="number" id="intelligence" min="1" max="20" value="10">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="wisdom">Wisdom</label>
+                        <input type="number" id="wisdom" min="1" max="20" value="10">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="charisma">Charisma</label>
+                        <input type="number" id="charisma" min="1" max="20" value="10">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="personality">Personality Traits</label>
+                    <textarea id="personality" rows="3" placeholder="Describe your character's personality"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="ideals">Ideals</label>
+                    <textarea id="ideals" rows="3" placeholder="What does your character believe in?"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="bonds">Bonds</label>
+                    <textarea id="bonds" rows="3" placeholder="What connections does your character have?"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="flaws">Flaws</label>
+                    <textarea id="flaws" rows="3" placeholder="What are your character's weaknesses?"></textarea>
+                </div>
+                
+                <div class="btn-group">
+                    <button id="generateRandom">Generate Random</button>
+                    <button id="saveCharacter">Save Character</button>
+                    <button id="exportCharacter">Export as PDF</button>
+                </div>
+                
+                <div class="custom-options">
+                    <h4>Custom Options Manager</h4>
+                    <p>Manage your custom races, classes, backgrounds, and alignments.</p>
+                    <button id="manageCustomOptions" class="small">Manage Custom Options</button>
+                </div>
+            </div>
+            
+            <div class="preview-section">
+                <h2>Character Preview</h2>
+                <div class="character-sheet">
+                    <div class="character-header">
+                        <div class="character-name" id="previewName">Character Name</div>
+                        <div id="previewRaceClass">Race • Class</div>
+                        <div id="previewBackgroundAlignment">Background • Alignment</div>
+                    </div>
+                    
+                    <div class="character-details">
+                        <div>
+                            <strong>Level:</strong> <span id="previewLevel">1</span>
+                        </div>
+                        <div>
+                            <strong>Hit Points:</strong> <span id="previewHP">10</span>
+                        </div>
+                        <div>
+                            <strong>Armor Class:</strong> <span id="previewAC">10</span>
+                        </div>
+                    </div>
+                    
+                    <div class="ability-scores">
+                        <div class="ability-score">
+                            <div class="ability-name">Strength</div>
+                            <div class="ability-value" id="previewStrength">10</div>
+                            <div class="ability-modifier" id="previewStrengthMod">+0</div>
+                        </div>
+                        <div class="ability-score">
+                            <div class="ability-name">Dexterity</div>
+                            <div class="ability-value" id="previewDexterity">10</div>
+                            <div class="ability-modifier" id="previewDexterityMod">+0</div>
+                        </div>
+                        <div class="ability-score">
+                            <div class="ability-name">Constitution</div>
+                            <div class="ability-value" id="previewConstitution">10</div>
+                            <div class="ability-modifier" id="previewConstitutionMod">+0</div>
+                        </div>
+                        <div class="ability-score">
+                            <div class="ability-name">Intelligence</div>
+                            <div class="ability-value" id="previewIntelligence">10</div>
+                            <div class="ability-modifier" id="previewIntelligenceMod">+0</div>
+                        </div>
+                        <div class="ability-score">
+                            <div class="ability-name">Wisdom</div>
+                            <div class="ability-value" id="previewWisdom">10</div>
+                            <div class="ability-modifier" id="previewWisdomMod">+0</div>
+                        </div>
+                        <div class="ability-score">
+                            <div class="ability-name">Charisma</div>
+                            <div class="ability-value" id="previewCharisma">10</div>
+                            <div class="ability-modifier" id="previewCharismaMod">+0</div>
+                        </div>
+                    </div>
+                    
+                    <div class="tabs">
+                        <div class="tab active" data-tab="personality">Personality</div>
+                        <div class="tab" data-tab="ideals">Ideals</div>
+                        <div class="tab" data-tab="bonds">Bonds</div>
+                        <div class="tab" data-tab="flaws">Flaws</div>
+                    </div>
+                    
+                    <div class="tab-content active" id="personality-content">
+                        <p id="previewPersonality">Personality traits will appear here.</p>
+                    </div>
+                    
+                    <div class="tab-content" id="ideals-content">
+                        <p id="previewIdeals">Character ideals will appear here.</p>
+                    </div>
+                    
+                    <div class="tab-content" id="bonds-content">
+                        <p id="previewBonds">Character bonds will appear here.</p>
+                    </div>
+                    
+                    <div class="tab-content" id="flaws-content">
+                        <p id="previewFlaws">Character flaws will appear here.</p>
+                    </div>
+                </div>
+                
+                <div id="savedCharacters" class="hidden">
+                    <h3>Saved Characters</h3>
+                    <ul id="characterList"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Custom Options Modal -->
+    <div id="customOptionsModal" class="modal">
+        <div class="modal-content">
+            <h3>Manage Custom Options</h3>
+            
+            <div class="form-group">
+                <h4>Custom Races</h4>
+                <ul id="customRacesList" class="custom-list">
+                    <!-- Custom races will be listed here -->
+                </ul>
+            </div>
+            
+            <div class="form-group">
+                <h4>Custom Classes</h4>
+                <ul id="customClassesList" class="custom-list">
+                    <!-- Custom classes will be listed here -->
+                </ul>
+            </div>
+            
+            <div class="form-group">
+                <h4>Custom Backgrounds</h4>
+                <ul id="customBackgroundsList" class="custom-list">
+                    <!-- Custom backgrounds will be listed here -->
+                </ul>
+            </div>
+            
+            <div class="form-group">
+                <h4>Custom Alignments</h4>
+                <ul id="customAlignmentsList" class="custom-list">
+                    <!-- Custom alignments will be listed here -->
+                </ul>
+            </div>
+            
+            <div class="modal-buttons">
+                <button id="closeCustomOptionsModal">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>D&D Character Creator - Not affiliated with Wizards of the Coast</p>
+        <p>For use with Dungeons & Dragons 5th Edition</p>
+    </footer>
+    
+    <script>
+        // DOM Elements
+        const characterName = document.getElementById('characterName');
+        const race = document.getElementById('race');
+        const charClass = document.getElementById('class');
+        const background = document.getElementById('background');
+        const alignment = document.getElementById('alignment');
+        const strength = document.getElementById('strength');
+        const dexterity = document.getElementById('dexterity');
+        const constitution = document.getElementById('constitution');
+        const intelligence = document.getElementById('intelligence');
+        const wisdom = document.getElementById('wisdom');
+        const charisma = document.getElementById('charisma');
+        const personality = document.getElementById('personality');
+        const ideals = document.getElementById('ideals');
+        const bonds = document.getElementById('bonds');
+        const flaws = document.getElementById('flaws');
+        
+        // Custom input elements
+        const customRaceInput = document.getElementById('customRaceInput');
+        const customClassInput = document.getElementById('customClassInput');
+        const customBackgroundInput = document.getElementById('customBackgroundInput');
+        const customAlignmentInput = document.getElementById('customAlignmentInput');
+        
+        // Custom option buttons
+        const addCustomRaceBtn = document.getElementById('addCustomRace');
+        const addCustomClassBtn = document.getElementById('addCustomClass');
+        const addCustomBackgroundBtn = document.getElementById('addCustomBackground');
+        const addCustomAlignmentBtn = document.getElementById('addCustomAlignment');
+        
+        // Modal elements
+        const customOptionsModal = document.getElementById('customOptionsModal');
+        const manageCustomOptionsBtn = document.getElementById('manageCustomOptions');
+        const closeCustomOptionsModalBtn = document.getElementById('closeCustomOptionsModal');
+        const customRacesList = document.getElementById('customRacesList');
+        const customClassesList = document.getElementById('customClassesList');
+        const customBackgroundsList = document.getElementById('customBackgroundsList');
+        const customAlignmentsList = document.getElementById('customAlignmentsList');
+        
+        // Preview Elements
+        const previewName = document.getElementById('previewName');
+        const previewRaceClass = document.getElementById('previewRaceClass');
+        const previewBackgroundAlignment = document.getElementById('previewBackgroundAlignment');
+        const previewStrength = document.getElementById('previewStrength');
+        const previewDexterity = document.getElementById('previewDexterity');
+        const previewConstitution = document.getElementById('previewConstitution');
+        const previewIntelligence = document.getElementById('previewIntelligence');
+        const previewWisdom = document.getElementById('previewWisdom');
+        const previewCharisma = document.getElementById('previewCharisma');
+        const previewStrengthMod = document.getElementById('previewStrengthMod');
+        const previewDexterityMod = document.getElementById('previewDexterityMod');
+        const previewConstitutionMod = document.getElementById('previewConstitutionMod');
+        const previewIntelligenceMod = document.getElementById('previewIntelligenceMod');
+        const previewWisdomMod = document.getElementById('previewWisdomMod');
+        const previewCharismaMod = document.getElementById('previewCharismaMod');
+        const previewPersonality = document.getElementById('previewPersonality');
+        const previewIdeals = document.getElementById('previewIdeals');
+        const previewBonds = document.getElementById('previewBonds');
+        const previewFlaws = document.getElementById('previewFlaws');
+        
+        // Buttons
+        const generateRandomBtn = document.getElementById('generateRandom');
+        const saveCharacterBtn = document.getElementById('saveCharacter');
+        const exportCharacterBtn = document.getElementById('exportCharacter');
+        
+        // Tabs
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        // Custom options storage
+        let customOptions = {
+            races: [],
+            classes: [],
+            backgrounds: [],
+            alignments: []
+        };
+        
+        // Load custom options from localStorage
+        function loadCustomOptions() {
+            const savedOptions = localStorage.getItem('dndCustomOptions');
+            if (savedOptions) {
+                customOptions = JSON.parse(savedOptions);
+            }
+            updateSelectOptions();
+        }
+        
+        // Save custom options to localStorage
+        function saveCustomOptions() {
+            localStorage.setItem('dndCustomOptions', JSON.stringify(customOptions));
+            updateSelectOptions();
+        }
+        
+        // Update select dropdowns with custom options
+        function updateSelectOptions() {
+            // Update race select
+            updateSelectWithCustomOptions(race, customOptions.races);
+            
+            // Update class select
+            updateSelectWithCustomOptions(charClass, customOptions.classes);
+            
+            // Update background select
+            updateSelectWithCustomOptions(background, customOptions.backgrounds);
+            
+            // Update alignment select
+            updateSelectWithCustomOptions(alignment, customOptions.alignments);
+            
+            // Update modal lists
+            updateCustomOptionsModal();
+        }
+        
+        // Helper function to update a select element with custom options
+        function updateSelectWithCustomOptions(selectElement, customOptionsArray) {
+            // Remove existing custom options (those not in the original list)
+            const originalOptions = Array.from(selectElement.options).filter(opt => 
+                !opt.value.startsWith('custom-')
+            );
+            
+            // Clear the select
+            selectElement.innerHTML = '';
+            
+            // Add the original options back
+            originalOptions.forEach(opt => {
+                selectElement.appendChild(opt);
+            });
+            
+            // Add custom options
+            customOptionsArray.forEach(option => {
+                const optionElement = document.createElement('option');
+                optionElement.value = `custom-${option}`;
+                optionElement.textContent = option;
+                selectElement.appendChild(optionElement);
+            });
+        }
+        
+        // Update the custom options modal
+        function updateCustomOptionsModal() {
+            // Update races list
+            customRacesList.innerHTML = '';
+            customOptions.races.forEach(race => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    ${race}
+                    <button class="small danger" onclick="removeCustomOption('races', '${race}')">Remove</button>
+                `;
+                customRacesList.appendChild(li);
+            });
+            
+            // Update classes list
+            customClassesList.innerHTML = '';
+            customOptions.classes.forEach(cls => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    ${cls}
+                    <button class="small danger" onclick="removeCustomOption('classes', '${cls}')">Remove</button>
+                `;
+                customClassesList.appendChild(li);
+            });
+            
+            // Update backgrounds list
+            customBackgroundsList.innerHTML = '';
+            customOptions.backgrounds.forEach(bg => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    ${bg}
+                    <button class="small danger" onclick="removeCustomOption('backgrounds', '${bg}')">Remove</button>
+                `;
+                customBackgroundsList.appendChild(li);
+            });
+            
+            // Update alignments list
+            customAlignmentsList.innerHTML = '';
+            customOptions.alignments.forEach(align => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    ${align}
+                    <button class="small danger" onclick="removeCustomOption('alignments', '${align}')">Remove</button>
+                `;
+                customAlignmentsList.appendChild(li);
+            });
+        }
+        
+        // Add a custom option
+        function addCustomOption(type, value) {
+            if (!value.trim()) return;
+            
+            // Check if option already exists
+            if (customOptions[type].includes(value)) {
+                alert(`This ${type.slice(0, -1)} already exists!`);
+                return;
+            }
+            
+            // Add the option
+            customOptions[type].push(value);
+            saveCustomOptions();
+            
+            // Clear the input
+            document.getElementById(`custom${type.charAt(0).toUpperCase() + type.slice(1)}Input`).value = '';
+            
+            // Select the new option
+            document.getElementById(type.slice(0, -1)).value = `custom-${value}`;
+            
+            updatePreview();
+        }
+        
+        // Remove a custom option
+        function removeCustomOption(type, value) {
+            customOptions[type] = customOptions[type].filter(opt => opt !== value);
+            saveCustomOptions();
+            
+            // If the removed option was selected, reset the selection
+            const selectElement = document.getElementById(type.slice(0, -1));
+            if (selectElement.value === `custom-${value}`) {
+                selectElement.value = '';
+            }
+            
+            updatePreview();
+        }
+        
+        // Calculate ability modifier
+        function calculateModifier(score) {
+            return Math.floor((score - 10) / 2);
+        }
+        
+        // Format modifier with sign
+        function formatModifier(mod) {
+            return mod >= 0 ? `+${mod}` : `${mod}`;
+        }
+        
+        // Update preview
+        function updatePreview() {
+            previewName.textContent = characterName.value || 'Character Name';
+            
+            // Handle custom options in preview
+            const raceValue = race.value.startsWith('custom-') ? race.value.substring(7) : race.value;
+            const classValue = charClass.value.startsWith('custom-') ? charClass.value.substring(7) : charClass.value;
+            previewRaceClass.textContent = `${raceValue || 'Race'} • ${classValue || 'Class'}`;
+            
+            const backgroundValue = background.value.startsWith('custom-') ? background.value.substring(7) : background.value;
+            const alignmentValue = alignment.value.startsWith('custom-') ? alignment.value.substring(7) : alignment.value;
+            previewBackgroundAlignment.textContent = `${backgroundValue || 'Background'} • ${alignmentValue || 'Alignment'}`;
+            
+            previewStrength.textContent = strength.value;
+            previewDexterity.textContent = dexterity.value;
+            previewConstitution.textContent = constitution.value;
+            previewIntelligence.textContent = intelligence.value;
+            previewWisdom.textContent = wisdom.value;
+            previewCharisma.textContent = charisma.value;
+            
+            previewStrengthMod.textContent = formatModifier(calculateModifier(parseInt(strength.value)));
+            previewDexterityMod.textContent = formatModifier(calculateModifier(parseInt(dexterity.value)));
+            previewConstitutionMod.textContent = formatModifier(calculateModifier(parseInt(constitution.value)));
+            previewIntelligenceMod.textContent = formatModifier(calculateModifier(parseInt(intelligence.value)));
+            previewWisdomMod.textContent = formatModifier(calculateModifier(parseInt(wisdom.value)));
+            previewCharismaMod.textContent = formatModifier(calculateModifier(parseInt(charisma.value)));
+            
+            previewPersonality.textContent = personality.value || 'Personality traits will appear here.';
+            previewIdeals.textContent = ideals.value || 'Character ideals will appear here.';
+            previewBonds.textContent = bonds.value || 'Character bonds will appear here.';
+            previewFlaws.textContent = flaws.value || 'Character flaws will appear here.';
+        }
+        
+        // Generate random character
+        function generateRandomCharacter() {
+            // Random names
+            const firstNames = ['Aelar', 'Borin', 'Cedric', 'Darian', 'Eldrin', 'Fiona', 'Gwendolyn', 'Hector'];
+            const lastNames = ['Ironheart', 'Swiftarrow', 'Shadowmoon', 'Stonehand', 'Goldenshield', 'Brightblade'];
+            
+            characterName.value = `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`;
+            
+            // Random race (including custom options)
+            const allRaces = [
+                'human', 'elf', 'dwarf', 'halfling', 'gnome', 'half-elf', 'half-orc', 'tiefling',
+                ...customOptions.races.map(race => `custom-${race}`)
+            ];
+            race.value = allRaces[Math.floor(Math.random() * allRaces.length)] || '';
+            
+            // Random class (including custom options)
+            const allClasses = [
+                'barbarian', 'bard', 'cleric', 'druid', 'fighter', 'monk', 'paladin', 'ranger', 'rogue', 'sorcerer', 'warlock', 'wizard',
+                ...customOptions.classes.map(cls => `custom-${cls}`)
+            ];
+            charClass.value = allClasses[Math.floor(Math.random() * allClasses.length)] || '';
+            
+            // Random background (including custom options)
+            const allBackgrounds = [
+                'acolyte', 'criminal', 'folk-hero', 'noble', 'sage', 'soldier',
+                ...customOptions.backgrounds.map(bg => `custom-${bg}`)
+            ];
+            background.value = allBackgrounds[Math.floor(Math.random() * allBackgrounds.length)] || '';
+            
+            // Random alignment (including custom options)
+            const allAlignments = [
+                'lawful-good', 'neutral-good', 'chaotic-good', 'lawful-neutral', 'true-neutral', 'chaotic-neutral', 'lawful-evil', 'neutral-evil', 'chaotic-evil',
+                ...customOptions.alignments.map(align => `custom-${align}`)
+            ];
+            alignment.value = allAlignments[Math.floor(Math.random() * allAlignments.length)] || '';
+            
+            // Random ability scores (standard array: 15, 14, 13, 12, 10, 8)
+            const standardArray = [15, 14, 13, 12, 10, 8];
+            const shuffledArray = standardArray.sort(() => Math.random() - 0.5);
+            
+            strength.value = shuffledArray[0];
+            dexterity.value = shuffledArray[1];
+            constitution.value = shuffledArray[2];
+            intelligence.value = shuffledArray[3];
+            wisdom.value = shuffledArray[4];
+            charisma.value = shuffledArray[5];
+            
+            // Random personality traits
+            const personalities = [
+                'I am always polite and respectful.',
+                'I am haunted by memories of war. I can\'t get the images of violence out of my mind.',
+                'I\'ve been isolated for so long that I rarely speak, preferring gestures and the occasional grunt.',
+                'I am utterly serene, even in the face of disaster.',
+                'I connect everything that happens to me to a grand, cosmic plan.',
+                'I often get lost in my own thoughts and contemplation, becoming oblivious to my surroundings.'
+            ];
+            personality.value = personalities[Math.floor(Math.random() * personalities.length)];
+            
+            // Random ideals
+            const idealsList = [
+                'Sincerity. There\'s no good in pretending to be something I\'m not.',
+                'Greater Good. It is each person\'s responsibility to make the most happiness for the whole tribe.',
+                'Might. The strong are meant to rule.',
+                'Logic. Emotions must not cloud our logical thinking.',
+                'Freedom. Chains are meant to be broken, as are those who would forge them.',
+                'Redemption. There\'s a spark of good in everyone.'
+            ];
+            ideals.value = idealsList[Math.floor(Math.random() * idealsList.length)];
+            
+            // Random bonds
+            const bondsList = [
+                'I would still lay down my life for the people I served with.',
+                'Someone saved my life on the battlefield. To this day, I will never leave a friend behind.',
+                'My honor is my life.',
+                'I\'ll never forget the crushing defeat my company suffered or the enemies who dealt it.',
+                'Those who fight beside me are those worth dying for.',
+                'I fight for those who cannot fight for themselves.'
+            ];
+            bonds.value = bondsList[Math.floor(Math.random() * bondsList.length)];
+            
+            // Random flaws
+            const flawsList = [
+                'The monstrous enemy we faced in battle still leaves me trembling with fear.',
+                'I have little respect for anyone who is not a proven warrior.',
+                'I made a terrible mistake in battle that cost many lives, and I would do anything to keep that mistake secret.',
+                'My hatred of my enemies is blind and unreasoning.',
+                'I obey the law, even if the law causes misery.',
+                'I\'d rather eat my armor than admit when I\'m wrong.'
+            ];
+            flaws.value = flawsList[Math.floor(Math.random() * flawsList.length)];
+            
+            updatePreview();
+        }
+        
+        // Save character to localStorage
+        function saveCharacter() {
+            const character = {
+                name: characterName.value,
+                race: race.value,
+                class: charClass.value,
+                background: background.value,
+                alignment: alignment.value,
+                strength: strength.value,
+                dexterity: dexterity.value,
+                constitution: constitution.value,
+                intelligence: intelligence.value,
+                wisdom: wisdom.value,
+                charisma: charisma.value,
+                personality: personality.value,
+                ideals: ideals.value,
+                bonds: bonds.value,
+                flaws: flaws.value
+            };
+            
+            let savedCharacters = JSON.parse(localStorage.getItem('dndCharacters')) || [];
+            savedCharacters.push(character);
+            localStorage.setItem('dndCharacters', JSON.stringify(savedCharacters));
+            
+            alert('Character saved successfully!');
+            displaySavedCharacters();
+        }
+        
+        // Display saved characters
+        function displaySavedCharacters() {
+            const savedCharacters = JSON.parse(localStorage.getItem('dndCharacters')) || [];
+            const characterList = document.getElementById('characterList');
+            const savedCharactersSection = document.getElementById('savedCharacters');
+            
+            if (savedCharacters.length > 0) {
+                savedCharactersSection.classList.remove('hidden');
+                characterList.innerHTML = '';
+                
+                savedCharacters.forEach((character, index) => {
+                    const li = document.createElement('li');
+                    // Handle custom options in display
+                    const displayRace = character.race.startsWith('custom-') ? character.race.substring(7) : character.race;
+                    const displayClass = character.class.startsWith('custom-') ? character.class.substring(7) : character.class;
+                    
+                    li.innerHTML = `
+                        <strong>${character.name}</strong> - ${displayRace} ${displayClass}
+                        <button onclick="loadCharacter(${index})">Load</button>
+                        <button onclick="deleteCharacter(${index})">Delete</button>
+                    `;
+                    characterList.appendChild(li);
+                });
+            } else {
+                savedCharactersSection.classList.add('hidden');
+            }
+        }
+        
+        // Load character from saved list
+        function loadCharacter(index) {
+            const savedCharacters = JSON.parse(localStorage.getItem('dndCharacters')) || [];
+            const character = savedCharacters[index];
+            
+            characterName.value = character.name;
+            race.value = character.race;
+            charClass.value = character.class;
+            background.value = character.background;
+            alignment.value = character.alignment;
+            strength.value = character.strength;
+            dexterity.value = character.dexterity;
+            constitution.value = character.constitution;
+            intelligence.value = character.intelligence;
+            wisdom.value = character.wisdom;
+            charisma.value = character.charisma;
+            personality.value = character.personality;
+            ideals.value = character.ideals;
+            bonds.value = character.bonds;
+            flaws.value = character.flaws;
+            
+            updatePreview();
+        }
+        
+        // Delete character from saved list
+        function deleteCharacter(index) {
+            const savedCharacters = JSON.parse(localStorage.getItem('dndCharacters')) || [];
+            savedCharacters.splice(index, 1);
+            localStorage.setItem('dndCharacters', JSON.stringify(savedCharacters));
+            displaySavedCharacters();
+        }
+        
+        // Export character as PDF (simulated)
+        function exportCharacter() {
+            alert('PDF export functionality would be implemented here. For now, you can print the character sheet using your browser\'s print function.');
+            // In a real implementation, you would use a library like jsPDF
+        }
+        
+        // Tab functionality
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.getAttribute('data-tab');
+                
+                // Remove active class from all tabs and contents
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding content
+                tab.classList.add('active');
+                document.getElementById(`${tabId}-content`).classList.add('active');
+            });
+        });
+        
+        // Modal functionality
+        manageCustomOptionsBtn.addEventListener('click', () => {
+            customOptionsModal.style.display = 'flex';
+        });
+        
+        closeCustomOptionsModalBtn.addEventListener('click', () => {
+            customOptionsModal.style.display = 'none';
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (event) => {
+            if (event.target === customOptionsModal) {
+                customOptionsModal.style.display = 'none';
+            }
+        });
+        
+        // Event listeners for custom option buttons
+        addCustomRaceBtn.addEventListener('click', () => {
+            addCustomOption('races', customRaceInput.value);
+        });
+        
+        addCustomClassBtn.addEventListener('click', () => {
+            addCustomOption('classes', customClassInput.value);
+        });
+        
+        addCustomBackgroundBtn.addEventListener('click', () => {
+            addCustomOption('backgrounds', customBackgroundInput.value);
+        });
+        
+        addCustomAlignmentBtn.addEventListener('click', () => {
+            addCustomOption('alignments', customAlignmentInput.value);
+        });
+        
+        // Allow adding custom options with Enter key
+        customRaceInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addCustomOption('races', customRaceInput.value);
+            }
+        });
+        
+        customClassInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addCustomOption('classes', customClassInput.value);
+            }
+        });
+        
+        customBackgroundInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addCustomOption('backgrounds', customBackgroundInput.value);
+            }
+        });
+        
+        customAlignmentInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addCustomOption('alignments', customAlignmentInput.value);
+            }
+        });
+        
+        // Event listeners for form inputs
+        characterName.addEventListener('input', updatePreview);
+        race.addEventListener('change', updatePreview);
+        charClass.addEventListener('change', updatePreview);
+        background.addEventListener('change', updatePreview);
+        alignment.addEventListener('change', updatePreview);
+        strength.addEventListener('input', updatePreview);
+        dexterity.addEventListener('input', updatePreview);
+        constitution.addEventListener('input', updatePreview);
+        intelligence.addEventListener('input', updatePreview);
+        wisdom.addEventListener('input', updatePreview);
+        charisma.addEventListener('input', updatePreview);
+        personality.addEventListener('input', updatePreview);
+        ideals.addEventListener('input', updatePreview);
+        bonds.addEventListener('input', updatePreview);
+        flaws.addEventListener('input', updatePreview);
+        
+        generateRandomBtn.addEventListener('click', generateRandomCharacter);
+        saveCharacterBtn.addEventListener('click', saveCharacter);
+        exportCharacterBtn.addEventListener('click', exportCharacter);
+        
+        // Initialize
+        loadCustomOptions();
+        updatePreview();
+        displaySavedCharacters();
+        
+        // Make functions available globally for onclick handlers
+        window.loadCharacter = loadCharacter;
+        window.deleteCharacter = deleteCharacter;
+        window.removeCustomOption = removeCustomOption;
+    </script>
+</body>
+</html>
