@@ -1,8 +1,6 @@
 D&D Character Creator
 A responsive, user-friendly Dungeons & Dragons character creator that works directly in your browser. Create, customize, and save your D&D characters with ease!
 
-https://img.shields.io/badge/D&D-5th%2520Edition-red https://img.shields.io/badge/GitHub-Pages-brightgreen https://img.shields.io/badge/License-MIT-blue
-
 Features
 🎭 Character Creation
 Complete Character Sheet: Name, race, class, background, alignment, and ability scores
