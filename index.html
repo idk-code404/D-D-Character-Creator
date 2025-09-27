@@ -14,6 +14,8 @@
             --text: #2C1810;
             --success: #4CAF50;
             --danger: #f44336;
+            --card-bg: rgba(44, 62, 80, 0.9);
+            --input-bg: rgba(52, 73, 94, 0.7);
         }
         
         * {
@@ -24,88 +26,141 @@
         }
         
         body {
-            background-color: var(--light);
-            color: var(--text);
-            line-height: 1.6;
+            background: linear-gradient(135deg, #1a2a3a 0%, #2c3e50 100%);
+            color: #f0f0f0;
+            line-height: 1.5;
+            min-height: 100vh;
+            padding: 0.5rem;
+            font-size: 0.9rem;
         }
         
         header {
-            background-color: var(--primary);
-            color: white;
+            background: linear-gradient(to right, #8B4513, #A0522D);
+            color: #FFEBCD;
             padding: 1rem;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            border-bottom: 2px solid #D2691E;
+            margin-bottom: 1rem;
+            border-radius: 6px;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 1rem;
+            padding: 0.5rem;
         }
         
         .creator-container {
             display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 1.5rem;
-            margin-top: 1.5rem;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
         }
         
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
             .creator-container {
                 grid-template-columns: 1fr;
             }
         }
         
         .form-section {
-            background-color: white;
+            background: var(--card-bg);
             border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border: 1px solid #4a6572;
+            display: flex;
+            flex-direction: column;
+            height: fit-content;
+            max-height: 95vh;
+            overflow-y: auto;
         }
         
         .preview-section {
-            background-color: white;
+            background: var(--card-bg);
             border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border: 1px solid #4a6572;
+            display: flex;
+            flex-direction: column;
         }
         
         h1, h2, h3 {
-            margin-bottom: 1rem;
-            color: var(--dark);
+            margin-bottom: 0.8rem;
+            color: #FFD700;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
         
         h1 {
-            font-size: 2.5rem;
+            font-size: 1.8rem;
+            letter-spacing: 0.5px;
         }
         
         h2 {
-            border-bottom: 2px solid var(--secondary);
+            border-bottom: 1px solid #D2691E;
             padding-bottom: 0.5rem;
+            font-size: 1.4rem;
+        }
+        
+        h3 {
+            color: #F4A460;
+            font-size: 1.2rem;
+            margin-top: 1rem;
         }
         
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
             position: relative;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+        
+        .compact-form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row, .compact-form-row {
+                grid-template-columns: 1fr;
+            }
         }
         
         label {
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.3rem;
             font-weight: 600;
+            color: #F4D03F;
+            font-size: 0.85rem;
         }
         
         input, select, textarea {
             width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #ddd;
+            padding: 0.6rem;
+            border: 1px solid #5D6D7E;
             border-radius: 4px;
-            font-size: 1rem;
+            font-size: 0.85rem;
+            background-color: var(--input-bg);
+            color: #ECF0F1;
+            transition: all 0.2s ease;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #F39C12;
+            box-shadow: 0 0 0 2px rgba(243, 156, 18, 0.2);
         }
         
         .custom-input-container {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.4rem;
+            margin-top: 0.3rem;
         }
         
         .custom-input-container input {
@@ -114,120 +169,192 @@
         
         .custom-input-container button {
             white-space: nowrap;
+            padding: 0.5rem 0.8rem;
         }
         
         button {
-            background-color: var(--primary);
-            color: white;
+            background: linear-gradient(to bottom, #D2691E, #8B4513);
+            color: #FFEBCD;
             border: none;
-            padding: 0.75rem 1.5rem;
+            padding: 0.6rem 1rem;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 1rem;
-            transition: background-color 0.3s;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
         
         button:hover {
-            background-color: var(--accent);
+            background: linear-gradient(to bottom, #CD853F, #A0522D);
+            transform: translateY(-1px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:active {
+            transform: translateY(0);
         }
         
         button.success {
-            background-color: var(--success);
+            background: linear-gradient(to bottom, #27AE60, #229954);
         }
         
         button.danger {
-            background-color: var(--danger);
+            background: linear-gradient(to bottom, #E74C3C, #CB4335);
         }
         
         button.small {
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
+            padding: 0.4rem 0.7rem;
+            font-size: 0.8rem;
         }
         
         .btn-group {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.6rem;
+            margin-top: 1.2rem;
+        }
+        
+        @media (max-width: 480px) {
+            .btn-group {
+                grid-template-columns: 1fr;
+            }
         }
         
         .character-sheet {
-            border: 2px solid var(--secondary);
+            border: 1px solid #D2691E;
             border-radius: 8px;
-            padding: 1.5rem;
-            background-color: #f9f5f0;
+            padding: 1.2rem;
+            background: linear-gradient(145deg, #1c2833 0%, #2c3e50 100%);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
         
         .character-header {
             text-align: center;
-            margin-bottom: 1.5rem;
-            border-bottom: 2px solid var(--secondary);
-            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #D2691E;
+            padding-bottom: 0.8rem;
         }
         
         .character-name {
-            font-size: 2rem;
-            color: var(--dark);
+            font-size: 1.6rem;
+            color: #F4D03F;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            margin-bottom: 0.3rem;
         }
         
         .character-details {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        .character-details div {
+            background: rgba(52, 73, 94, 0.7);
+            padding: 0.6rem;
+            border-radius: 4px;
+            text-align: center;
+            border-left: 3px solid #F39C12;
+            font-size: 0.85rem;
         }
         
         .ability-scores {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+            gap: 0.6rem;
+            margin-bottom: 1rem;
         }
         
         .ability-score {
             text-align: center;
-            padding: 1rem;
-            background-color: var(--secondary);
-            border-radius: 4px;
+            padding: 0.8rem;
+            background: linear-gradient(145deg, #34495e, #2c3e50);
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            border: 1px solid #5D6D7E;
+            transition: transform 0.2s ease;
+        }
+        
+        .ability-score:hover {
+            transform: translateY(-2px);
         }
         
         .ability-name {
             font-weight: bold;
             text-transform: uppercase;
+            color: #F4D03F;
+            letter-spacing: 0.5px;
+            font-size: 0.8rem;
         }
         
         .ability-value {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: bold;
-            margin: 0.5rem 0;
+            margin: 0.4rem 0;
+            color: #ECF0F1;
+        }
+        
+        .ability-modifier {
+            font-size: 1rem;
+            color: #F39C12;
+            font-weight: bold;
         }
         
         .character-traits {
-            margin-bottom: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
         
         .tabs {
             display: flex;
-            border-bottom: 1px solid #ddd;
-            margin-bottom: 1rem;
+            border-bottom: 1px solid #5D6D7E;
+            margin-bottom: 0.8rem;
+            flex-wrap: wrap;
         }
         
         .tab {
-            padding: 0.75rem 1.5rem;
+            padding: 0.6rem 1rem;
             cursor: pointer;
             border: 1px solid transparent;
             border-bottom: none;
             border-radius: 4px 4px 0 0;
+            background: #34495e;
+            color: #BDC3C7;
+            transition: all 0.2s ease;
+            font-size: 0.85rem;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .tab:hover {
+            background: #4a6572;
+            color: #ECF0F1;
         }
         
         .tab.active {
-            background-color: white;
-            border-color: #ddd;
-            border-bottom-color: white;
+            background: #2C3E50;
+            border-color: #5D6D7E;
+            border-bottom-color: #2C3E50;
             margin-bottom: -1px;
+            color: #F4D03F;
         }
         
         .tab-content {
             display: none;
+            padding: 0.8rem;
+            background: rgba(44, 62, 80, 0.7);
+            border-radius: 0 4px 4px 4px;
+            border: 1px solid #5D6D7E;
+            border-top: none;
+            flex-grow: 1;
+            overflow-y: auto;
+            max-height: 200px;
+            font-size: 0.85rem;
         }
         
         .tab-content.active {
@@ -240,15 +367,17 @@
         
         .custom-options {
             margin-top: 1rem;
-            padding: 1rem;
-            background-color: #f9f9f9;
-            border-radius: 4px;
-            border-left: 4px solid var(--accent);
+            padding: 0.8rem;
+            background: linear-gradient(145deg, #34495e, #2c3e50);
+            border-radius: 6px;
+            border-left: 4px solid #F39C12;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         }
         
         .custom-options h4 {
             margin-bottom: 0.5rem;
-            color: var(--dark);
+            color: #F4D03F;
+            font-size: 1rem;
         }
         
         .custom-list {
@@ -260,25 +389,31 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.5rem;
-            border-bottom: 1px solid #eee;
+            padding: 0.4rem;
+            border-bottom: 1px solid #5D6D7E;
+            background: rgba(52, 73, 94, 0.5);
+            margin-bottom: 0.3rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
         }
         
         .custom-list li:last-child {
             border-bottom: none;
+            margin-bottom: 0;
         }
         
         .custom-list button {
-            padding: 0.25rem 0.5rem;
-            font-size: 0.8rem;
+            padding: 0.3rem 0.6rem;
+            font-size: 0.75rem;
         }
         
         footer {
             text-align: center;
-            margin-top: 2rem;
-            padding: 1rem;
-            color: var(--dark);
-            font-size: 0.9rem;
+            margin-top: 1rem;
+            padding: 0.8rem;
+            color: #BDC3C7;
+            font-size: 0.8rem;
+            border-top: 1px solid #5D6D7E;
         }
         
         .modal {
@@ -288,37 +423,150 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.7);
             z-index: 1000;
             justify-content: center;
             align-items: center;
         }
         
         .modal-content {
-            background-color: white;
-            padding: 2rem;
+            background: linear-gradient(145deg, #2d3e50 0%, #34495e 100%);
+            padding: 1.5rem;
             border-radius: 8px;
             width: 90%;
             max-width: 500px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            border: 1px solid #5D6D7E;
+            max-height: 80vh;
+            overflow-y: auto;
         }
         
         .modal h3 {
             margin-bottom: 1rem;
+            text-align: center;
         }
         
         .modal-buttons {
             display: flex;
             justify-content: flex-end;
-            gap: 1rem;
-            margin-top: 1.5rem;
+            gap: 0.8rem;
+            margin-top: 1.2rem;
+        }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #2C3E50;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #D2691E;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #A0522D;
+        }
+        
+        /* Animation for new elements */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .form-section, .preview-section {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        /* Compact ability scores for very small screens */
+        @media (max-width: 480px) {
+            .ability-scores {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .character-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                border-radius: 0;
+                border: 1px solid #5D6D7E;
+                margin-bottom: 0;
+            }
+            
+            .tab.active {
+                border-radius: 0;
+            }
+            
+            .tab-content {
+                border-radius: 0 0 4px 4px;
+                border-top: 1px solid #5D6D7E;
+            }
+        }
+        
+        /* Improved spacing for form elements */
+        .form-section {
+            gap: 0.8rem;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .ability-scores-form {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.6rem;
+        }
+        
+        @media (max-width: 768px) {
+            .ability-scores-form {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .ability-scores-form {
+                grid-template-columns: 1fr;
+            gap: 0.4rem;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+                background: rgba(52, 73, 94, 0.3);
+                border-radius: 4px;
+            }
+        }
+        
+        /* Make textareas more compact */
+        textarea {
+            min-height: 60px;
+            resize: vertical;
+        }
+        
+        /* Better organization of character details */
+        .character-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .character-info-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <header>
         <h1>D&D Character Creator</h1>
-        <p>Build your perfect Dungeons & Dragons character</p>
+        <p>Forge your legend in the world of Dungeons & Dragons</p>
     </header>
     
     <div class="container">
@@ -331,147 +579,152 @@
                     <input type="text" id="characterName" placeholder="Enter character name">
                 </div>
                 
-                <div class="form-group">
-                    <label for="race">Race</label>
-                    <select id="race">
-                        <option value="">Select a race</option>
-                        <option value="human">Human</option>
-                        <option value="elf">Elf</option>
-                        <option value="dwarf">Dwarf</option>
-                        <option value="halfling">Halfling</option>
-                        <option value="gnome">Gnome</option>
-                        <option value="half-elf">Half-Elf</option>
-                        <option value="half-orc">Half-Orc</option>
-                        <option value="tiefling">Tiefling</option>
-                    </select>
-                    <div class="custom-input-container">
-                        <input type="text" id="customRaceInput" placeholder="Add custom race">
-                        <button id="addCustomRace" class="small">Add</button>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="race">Race</label>
+                        <select id="race">
+                            <option value="">Select a race</option>
+                            <option value="human">Human</option>
+                            <option value="elf">Elf</option>
+                            <option value="dwarf">Dwarf</option>
+                            <option value="halfling">Halfling</option>
+                            <option value="gnome">Gnome</option>
+                            <option value="half-elf">Half-Elf</option>
+                            <option value="half-orc">Half-Orc</option>
+                            <option value="tiefling">Tiefling</option>
+                        </select>
+                        <div class="custom-input-container">
+                            <input type="text" id="customRaceInput" placeholder="Custom race">
+                            <button id="addCustomRace" class="small">Add</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="class">Class</label>
+                        <select id="class">
+                            <option value="">Select a class</option>
+                            <option value="barbarian">Barbarian</option>
+                            <option value="bard">Bard</option>
+                            <option value="cleric">Cleric</option>
+                            <option value="druid">Druid</option>
+                            <option value="fighter">Fighter</option>
+                            <option value="monk">Monk</option>
+                            <option value="paladin">Paladin</option>
+                            <option value="ranger">Ranger</option>
+                            <option value="rogue">Rogue</option>
+                            <option value="sorcerer">Sorcerer</option>
+                            <option value="warlock">Warlock</option>
+                            <option value="wizard">Wizard</option>
+                        </select>
+                        <div class="custom-input-container">
+                            <input type="text" id="customClassInput" placeholder="Custom class">
+                            <button id="addCustomClass" class="small">Add</button>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="class">Class</label>
-                    <select id="class">
-                        <option value="">Select a class</option>
-                        <option value="barbarian">Barbarian</option>
-                        <option value="bard">Bard</option>
-                        <option value="cleric">Cleric</option>
-                        <option value="druid">Druid</option>
-                        <option value="fighter">Fighter</option>
-                        <option value="monk">Monk</option>
-                        <option value="paladin">Paladin</option>
-                        <option value="ranger">Ranger</option>
-                        <option value="rogue">Rogue</option>
-                        <option value="sorcerer">Sorcerer</option>
-                        <option value="warlock">Warlock</option>
-                        <option value="wizard">Wizard</option>
-                    </select>
-                    <div class="custom-input-container">
-                        <input type="text" id="customClassInput" placeholder="Add custom class">
-                        <button id="addCustomClass" class="small">Add</button>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="background">Background</label>
+                        <select id="background">
+                            <option value="">Select a background</option>
+                            <option value="acolyte">Acolyte</option>
+                            <option value="criminal">Criminal</option>
+                            <option value="folk-hero">Folk Hero</option>
+                            <option value="noble">Noble</option>
+                            <option value="sage">Sage</option>
+                            <option value="soldier">Soldier</option>
+                        </select>
+                        <div class="custom-input-container">
+                            <input type="text" id="customBackgroundInput" placeholder="Custom background">
+                            <button id="addCustomBackground" class="small">Add</button>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="background">Background</label>
-                    <select id="background">
-                        <option value="">Select a background</option>
-                        <option value="acolyte">Acolyte</option>
-                        <option value="criminal">Criminal</option>
-                        <option value="folk-hero">Folk Hero</option>
-                        <option value="noble">Noble</option>
-                        <option value="sage">Sage</option>
-                        <option value="soldier">Soldier</option>
-                    </select>
-                    <div class="custom-input-container">
-                        <input type="text" id="customBackgroundInput" placeholder="Add custom background">
-                        <button id="addCustomBackground" class="small">Add</button>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="alignment">Alignment</label>
-                    <select id="alignment">
-                        <option value="">Select alignment</option>
-                        <option value="lawful-good">Lawful Good</option>
-                        <option value="neutral-good">Neutral Good</option>
-                        <option value="chaotic-good">Chaotic Good</option>
-                        <option value="lawful-neutral">Lawful Neutral</option>
-                        <option value="true-neutral">True Neutral</option>
-                        <option value="chaotic-neutral">Chaotic Neutral</option>
-                        <option value="lawful-evil">Lawful Evil</option>
-                        <option value="neutral-evil">Neutral Evil</option>
-                        <option value="chaotic-evil">Chaotic Evil</option>
-                    </select>
-                    <div class="custom-input-container">
-                        <input type="text" id="customAlignmentInput" placeholder="Add custom alignment">
-                        <button id="addCustomAlignment" class="small">Add</button>
+                    
+                    <div class="form-group">
+                        <label for="alignment">Alignment</label>
+                        <select id="alignment">
+                            <option value="">Select alignment</option>
+                            <option value="lawful-good">Lawful Good</option>
+                            <option value="neutral-good">Neutral Good</option>
+                            <option value="chaotic-good">Chaotic Good</option>
+                            <option value="lawful-neutral">Lawful Neutral</option>
+                            <option value="true-neutral">True Neutral</option>
+                            <option value="chaotic-neutral">Chaotic Neutral</option>
+                            <option value="lawful-evil">Lawful Evil</option>
+                            <option value="neutral-evil">Neutral Evil</option>
+                            <option value="chaotic-evil">Chaotic Evil</option>
+                        </select>
+                        <div class="custom-input-container">
+                            <input type="text" id="customAlignmentInput" placeholder="Custom alignment">
+                            <button id="addCustomAlignment" class="small">Add</button>
+                        </div>
                     </div>
                 </div>
                 
                 <h3>Ability Scores</h3>
                 <div class="ability-scores-form">
                     <div class="form-group">
-                        <label for="strength">Strength</label>
+                        <label for="strength">STR</label>
                         <input type="number" id="strength" min="1" max="20" value="10">
                     </div>
                     
                     <div class="form-group">
-                        <label for="dexterity">Dexterity</label>
+                        <label for="dexterity">DEX</label>
                         <input type="number" id="dexterity" min="1" max="20" value="10">
                     </div>
                     
                     <div class="form-group">
-                        <label for="constitution">Constitution</label>
+                        <label for="constitution">CON</label>
                         <input type="number" id="constitution" min="1" max="20" value="10">
                     </div>
                     
                     <div class="form-group">
-                        <label for="intelligence">Intelligence</label>
+                        <label for="intelligence">INT</label>
                         <input type="number" id="intelligence" min="1" max="20" value="10">
                     </div>
                     
                     <div class="form-group">
-                        <label for="wisdom">Wisdom</label>
+                        <label for="wisdom">WIS</label>
                         <input type="number" id="wisdom" min="1" max="20" value="10">
                     </div>
                     
                     <div class="form-group">
-                        <label for="charisma">Charisma</label>
+                        <label for="charisma">CHA</label>
                         <input type="number" id="charisma" min="1" max="20" value="10">
                     </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="personality">Personality Traits</label>
-                    <textarea id="personality" rows="3" placeholder="Describe your character's personality"></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="ideals">Ideals</label>
-                    <textarea id="ideals" rows="3" placeholder="What does your character believe in?"></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="bonds">Bonds</label>
-                    <textarea id="bonds" rows="3" placeholder="What connections does your character have?"></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="flaws">Flaws</label>
-                    <textarea id="flaws" rows="3" placeholder="What are your character's weaknesses?"></textarea>
+                <div class="character-info-grid">
+                    <div class="form-group">
+                        <label for="personality">Personality</label>
+                        <textarea id="personality" rows="2" placeholder="Character personality"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="ideals">Ideals</label>
+                        <textarea id="ideals" rows="2" placeholder="Character ideals"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="bonds">Bonds</label>
+                        <textarea id="bonds" rows="2" placeholder="Character bonds"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="flaws">Flaws</label>
+                        <textarea id="flaws" rows="2" placeholder="Character flaws"></textarea>
+                    </div>
                 </div>
                 
                 <div class="btn-group">
-                    <button id="generateRandom">Generate Random</button>
-                    <button id="saveCharacter">Save Character</button>
-                    <button id="exportCharacter">Export as PDF</button>
+                    <button id="generateRandom">Random</button>
+                    <button id="saveCharacter">Save</button>
+                    <button id="exportCharacter">Export</button>
                 </div>
                 
                 <div class="custom-options">
-                    <h4>Custom Options Manager</h4>
-                    <p>Manage your custom races, classes, backgrounds, and alignments.</p>
+                    <h4>Custom Options</h4>
                     <button id="manageCustomOptions" class="small">Manage Custom Options</button>
                 </div>
             </div>
@@ -490,10 +743,10 @@
                             <strong>Level:</strong> <span id="previewLevel">1</span>
                         </div>
                         <div>
-                            <strong>Hit Points:</strong> <span id="previewHP">10</span>
+                            <strong>HP:</strong> <span id="previewHP">10</span>
                         </div>
                         <div>
-                            <strong>Armor Class:</strong> <span id="previewAC">10</span>
+                            <strong>AC:</strong> <span id="previewAC">10</span>
                         </div>
                     </div>
                     
@@ -530,27 +783,29 @@
                         </div>
                     </div>
                     
-                    <div class="tabs">
-                        <div class="tab active" data-tab="personality">Personality</div>
-                        <div class="tab" data-tab="ideals">Ideals</div>
-                        <div class="tab" data-tab="bonds">Bonds</div>
-                        <div class="tab" data-tab="flaws">Flaws</div>
-                    </div>
-                    
-                    <div class="tab-content active" id="personality-content">
-                        <p id="previewPersonality">Personality traits will appear here.</p>
-                    </div>
-                    
-                    <div class="tab-content" id="ideals-content">
-                        <p id="previewIdeals">Character ideals will appear here.</p>
-                    </div>
-                    
-                    <div class="tab-content" id="bonds-content">
-                        <p id="previewBonds">Character bonds will appear here.</p>
-                    </div>
-                    
-                    <div class="tab-content" id="flaws-content">
-                        <p id="previewFlaws">Character flaws will appear here.</p>
+                    <div class="character-traits">
+                        <div class="tabs">
+                            <div class="tab active" data-tab="personality">Personality</div>
+                            <div class="tab" data-tab="ideals">Ideals</div>
+                            <div class="tab" data-tab="bonds">Bonds</div>
+                            <div class="tab" data-tab="flaws">Flaws</div>
+                        </div>
+                        
+                        <div class="tab-content active" id="personality-content">
+                            <p id="previewPersonality">Personality traits will appear here.</p>
+                        </div>
+                        
+                        <div class="tab-content" id="ideals-content">
+                            <p id="previewIdeals">Character ideals will appear here.</p>
+                        </div>
+                        
+                        <div class="tab-content" id="bonds-content">
+                            <p id="previewBonds">Character bonds will appear here.</p>
+                        </div>
+                        
+                        <div class="tab-content" id="flaws-content">
+                            <p id="previewFlaws">Character flaws will appear here.</p>
+                        </div>
                     </div>
                 </div>
                 
