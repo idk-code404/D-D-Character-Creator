@@ -29,7 +29,7 @@ Custom Options Manager: Easy management of homebrew content
 
 Quick Start
 Option 1: Use on GitHub Pages
-Visit the live version: https://yourusername.github.io/dnd-character-creator
+Visit the live version: (https://idk-code404.github.io/D-D-Character-Creator/)
 
 Start creating characters immediately!
 
